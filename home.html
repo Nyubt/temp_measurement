@@ -1,12 +1,75 @@
 <!DOCTYPE html>
 <html>
 <body>
-<form action="/" method="POST">
-Hello, world!
-<input type="text" name="temp" />
-<input type="text" name="val" />
-<input type="submit" value="Click me" />
-</form>
+	<div style="height: 50%; min-width: 800px; width: 50%; float: left">
+		<canvas id="temperatureChart" />
+	</div>
+	<div style="height: 50%; width: 50%; float: left">
+		<form action="/" method="POST">
+
+		<label for="iteratii">
+			Numar de iteratii
+		<input type="text" name="iteratii" />
+		</label>
+		<br />
+		<input type="submit" value="Incepe procesul" />
+		</form>
+	</div>
+	<div style="clear: both" />
+		<div>
+			Experimentul este oprit!
+		</div>
+	<table>
+	    <tr>
+		<th>Senzor Temperatura 1 (Celsius)</th>
+		<th>Senzor Temperatura 2 (Celsius)</th>
+		<th>Senzor Temperatura 3 (Celsius)</th>
+		<th>Timp</th>
+	    </tr>
+	</table>
+
+	<!-- Chart.js: www.chartjs.org -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
+	<script type="text/javascript">
+	const ctx = document.getElementById('temperatureChart').getContext('2d');
+	let chart = null;
+	setInterval(async function() {
+		let response = await fetch('/temps')
+		let temps = await response.json();
+
+		if (chart != null) {
+			// Chart must be destroyed before creating new one
+			chart.destroy();
+		}
+		chart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels: temps.map(x => x[4]),
+				datasets: [
+					{
+						label: 'Senzor 1',
+						data: temps.map(x => x[0]),
+						pointRadius: 0
+					},
+					{
+						label: 'Senzor 2',
+						data: temps.map(x => x[1]),
+						pointRadius: 0
+					}
+				],
+			},
+			options: {
+				scales: {
+					y: {
+						max: 30,
+						min: -20
+					}
+				},
+				animation: false
+			}
+		});
+	}, 5000);
+	</script>
 </body>
 </html>
 
