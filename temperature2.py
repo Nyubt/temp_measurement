@@ -23,9 +23,13 @@ DEVICE2 = "28-3c01f095d551"
 class DBConnection:
     def __init__(self, database):
         self.database = database
+        
+    def connect_db(self):
+        conn = sqlite3.connect(self.database)
+        return conn
 
     def create_db(self):
-        conn = sqlite3.connect(self.database)
+        conn = self.connect_db()
 
         sql_create_data_table = """ CREATE TABLE IF NOT EXISTS project (
                                         tempsenzor1 real NOT NULL,
@@ -46,10 +50,6 @@ class DBConnection:
         conn.execute(sql_create_data_table)
         conn.execute(sql_relay_state)
         conn.close()
-        
-    def connect_db(self):
-        conn = sqlite3.connect(self.database)
-        return conn
 
     def write_temp_db(conn,temp1,temp2,temp3):
         sql_write_temp = "INSERT INTO project (tempsenzor1,tempsenzor2,tempsenzor3,timp) VALUES (?,?,?,?) "
@@ -57,7 +57,7 @@ class DBConnection:
         conn.commit()
 
     def read_temp_db(self):
-        conn = sqlite3.connect(self.database)
+        conn = self.connect_db()
         now = int(time.time())
         sql_read_temp_table = "SELECT tempsenzor1,tempsenzor2,tempsenzor3,timp FROM project WHERE timp > ? - 3600"
         data = conn.execute(sql_read_temp_table, [now]).fetchall()
