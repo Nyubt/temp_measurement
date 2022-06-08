@@ -31,13 +31,13 @@ class DBConnection:
     def create_db(self):
         conn = self.connect_db()
 
-        sql_create_data_table = """ CREATE TABLE IF NOT EXISTS temperature (
+        sql_create_temperature_data_table = """ CREATE TABLE IF NOT EXISTS temperature (
                                         temp1 real NOT NULL,
                                         temp2 real NOT NULL,
                                         temp3 real NOT NULL,
                                         timp numeric NOT NULL
                                     ); """
-        sql_relay_state = """ CREATE TABLE IF NOT EXISTS test (
+        sql_create_test_data_table = """ CREATE TABLE IF NOT EXISTS test (
                                  exp_id integer PRIMARY KEY AUTOINCREMENT,
                                  time_start integer NOT NULL,
                                  time_end integer,
@@ -49,8 +49,8 @@ class DBConnection:
                                 experimentul
                               """
         #tabel poate schimba nr ciclurilor,durata,temperaturi max/min
-        conn.execute(sql_create_data_table)
-        conn.execute(sql_relay_state)
+        conn.execute(sql_create_temperature_data_table)
+        conn.execute(sql_create_test_data_table)
         conn.close()
 
     def write_temp_db(conn,temp1,temp2,temp3):
