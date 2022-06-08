@@ -31,15 +31,17 @@ class DBConnection:
     def create_db(self):
         conn = self.connect_db()
 
-        sql_create_data_table = """ CREATE TABLE IF NOT EXISTS project (
-                                        tempsenzor1 real NOT NULL,
-                                        tempsenzor2 real NOT NULL,
-                                        tempsenzor3 real NOT NULL,
+        sql_create_data_table = """ CREATE TABLE IF NOT EXISTS temperature (
+                                        temp1 real NOT NULL,
+                                        temp2 real NOT NULL,
+                                        temp3 real NOT NULL,
                                         timp numeric NOT NULL
                                     ); """
-        sql_relay_state = """ CREATE TABLE IF NOT EXISTS relee (
-                                 starereleu1 integer NOT NULL,
-                                 starereleu2 integer NOT NULL
+        sql_relay_state = """ CREATE TABLE IF NOT EXISTS test (
+                                 exp_id integer PRIMARY KEY AUTOINCREMENT,
+                                 time_start integer NOT NULL,
+                                 time_end integer,
+                                 terminated bool NOT NULL
                               ); """
 
         sql_user_can_change = """
@@ -52,14 +54,14 @@ class DBConnection:
         conn.close()
 
     def write_temp_db(conn,temp1,temp2,temp3):
-        sql_write_temp = "INSERT INTO project (tempsenzor1,tempsenzor2,tempsenzor3,timp) VALUES (?,?,?,?) "
+        sql_write_temp = "INSERT INTO temperature (temp1,temp2,temp3,timp) VALUES (?,?,?,?) "
         conn.execute(sql_write_temp,(temp1,temp2,temp3,int(time.time()))) 
         conn.commit()
 
     def read_temp_db(self):
         conn = self.connect_db()
         now = int(time.time())
-        sql_read_temp_table = "SELECT tempsenzor1,tempsenzor2,tempsenzor3,timp FROM project WHERE timp > ? - 3600"
+        sql_read_temp_table = "SELECT temp1,temp2,temp3,timp FROM temperature WHERE timp > ? - 3600"
         data = conn.execute(sql_read_temp_table, [now]).fetchall()
         conn.close()
         return data
