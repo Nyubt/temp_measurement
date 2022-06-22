@@ -14,76 +14,90 @@
 		integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
 
-<body>
-	<nav class="navbar bg-light">
-		<div class="container-fluid">
-			<a class="navbar-brand mx-auto" href="#">
-				Experiment Preview
-			</a>
-		</div>
-	</nav>
-	<br />
+<body class="nav-fixed bg-light">
 	<div class="container">
-		<div class="row">
-			<div class="col col-xl-8 col-lg-7">
-				<div class="card shadow mb-4">
-					<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-						<h6 class="m-0 font-weight-bold">Experiment Progress</h6>
-					</div>
-					<div class="card-body">
-						<div style="height: 20rem; width: 100%; position: relative">
-							<canvas id="temperatureChart" />
+		<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+			<div class="container-fluid">
+				<a class="navbar-brand mx-auto" href="#">
+					Experiment Preview
+				</a>
+			</div>
+		</nav>
+		<br />
+		<div class="container-xxl position-relative bg-white d-flex p-0">
+			<div class="container">
+				<div class="row">
+					<div class="col col-xl-8 col-lg-7">
+						<div class="card shadow mb-4">
+							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+								<h6 class="m-0 font-weight-bold">Experiment Progress</h6>
+							</div>
+							<div class="card-body">
+								<div style="height: 20rem; width: 100%; position: relative">
+									<canvas id="temperatureChart" />
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-			<div class="col-xl-4 col-lg-5">
-				<div class="card shadow mb-4">
-					<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-						<h6 class="m-0 font-weight-bold">Experiment Mnagement</h6>
-					</div>
-					<div class="card-body">
-						<div style="height: 20rem; min-width: 768px; width: 100%; position: relative; box-sizing: border-box;">
-							<div>
-								Experimentul este oprit!
+					<div class="col-xl-4 col-lg-5">
+						<div class="card shadow mb-4">
+							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+								<h6 class="m-0 font-weight-bold">Experiment Mnagement</h6>
 							</div>
-							<div style="padding-top: 1.5rem!important; padding-bottom: 0.5rem!important">
-								<form action="/" method="POST">
-									<div class="form-group">
-										<label for="sel1">Select experiment:</label>
-										<select name="sel1" class="form-control" style="width: auto;" id="sel1">
-											<option value="1">Experiment 1</option>
-											<option value="2">Experiment 2</option>
-											<option value="3">Experiment 3</option>
-										</select>
+							<div class="card-body">
+								<div style="height: 20rem; width: 100%; position: relative; box-sizing: border-box;">
+									<div>
+										Experimentul este oprit!
 									</div>
-									<br />
-									<input type="submit" value="Incepe procesul" />
-								</form>
+									<div style="padding-top: 1.5rem!important; padding-bottom: 0.5rem!important">
+										<form action="/" method="POST">
+											<div class="form-group">
+												<label for="sel1">Select experiment:</label>
+												<select name="sel1" class="form-control" id="sel1">
+													<option value="1">Experiment 1</option>
+													<option value="2">Experiment 2</option>
+													<option value="3">Experiment 3</option>
+												</select>
+											</div>
+											<br />
+											<input type="submit" value="Incepe procesul" />
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div style="clear: both" />
+					</div>
+				</div>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col">
+					<div class="card shadow mb-4">
+						<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+							<h6 class="m-0 font-weight-bold">Past Experiments</h6>
+						</div>	
+						<div class="card-body">	
+							<div class="container-fluid pt-4 px-4">		
+								<div class="bg-light text-center rounded p-4">
+									<div class="table-responsive">
+										<table class="table text-start align-middle table-bordered table-hover mb-0">
+											<tr class="text-dark">
+												<th>Sensor Temp 1 (Celsius)</th>
+												<th>Sensor Temp 2 (Celsius)</th>
+												<th>Sensor Temp 3 (Celsius)</th>
+												<th>Time</th>
+											</tr>
+										</table>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div style="clear: both" />
 			</div>
 		</div>
-	</div>
-	<br />
-	<div class="row">
-		<div class="col">
-			Lista experimente trecute
-			<table>
-				<tr>
-					<th>Senzor Temperatura 1 (Celsius)</th>
-					<th>Senzor Temperatura 2 (Celsius)</th>
-					<th>Senzor Temperatura 3 (Celsius)</th>
-					<th>Timp</th>
-				</tr>
-			</table>
-		</div>
-	</div>
-
-
+	</div>	
 
 	<!-- Chart.js: www.chartjs.org -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
