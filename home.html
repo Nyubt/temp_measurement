@@ -1,75 +1,136 @@
 <!DOCTYPE html>
 <html>
-<body>
-	<div style="height: 50%; min-width: 800px; width: 50%; float: left">
-		<canvas id="temperatureChart" />
-	</div>
-	<div style="height: 50%; width: 50%; float: left">
-		<form action="/" method="POST">
 
-		<label for="iteratii">
-			Numar de iteratii
-		<input type="text" name="iteratii" />
-		</label>
-		<br />
-		<input type="submit" value="Incepe procesul" />
-		</form>
-	</div>
-	<div style="clear: both" />
-		<div>
-			Experimentul este oprit!
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<title>Experiment Dashboard</title>
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+
+<body>
+	<nav class="navbar bg-light">
+		<div class="container-fluid">
+			<a class="navbar-brand mx-auto" href="#">
+				Experiment Preview
+			</a>
 		</div>
-	<table>
-	    <tr>
-		<th>Senzor Temperatura 1 (Celsius)</th>
-		<th>Senzor Temperatura 2 (Celsius)</th>
-		<th>Senzor Temperatura 3 (Celsius)</th>
-		<th>Timp</th>
-	    </tr>
-	</table>
+	</nav>
+	<br />
+	<div class="container">
+		<div class="row">
+			<div class="col col-xl-8 col-lg-7">
+				<div class="card shadow mb-4">
+					<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+						<h6 class="m-0 font-weight-bold">Experiment Progress</h6>
+					</div>
+					<div class="card-body">
+						<div style="height: 20rem; width: 100%; position: relative">
+							<canvas id="temperatureChart" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-4 col-lg-5">
+				<div class="card shadow mb-4">
+					<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+						<h6 class="m-0 font-weight-bold">Experiment Mnagement</h6>
+					</div>
+					<div class="card-body">
+						<div style="height: 20rem; min-width: 768px; width: 100%; position: relative; box-sizing: border-box;">
+							<div>
+								Experimentul este oprit!
+							</div>
+							<div style="padding-top: 1.5rem!important; padding-bottom: 0.5rem!important">
+								<form action="/" method="POST">
+									<div class="form-group">
+										<label for="sel1">Select experiment:</label>
+										<select name="sel1" class="form-control" style="width: auto;" id="sel1">
+											<option value="1">Experiment 1</option>
+											<option value="2">Experiment 2</option>
+											<option value="3">Experiment 3</option>
+										</select>
+									</div>
+									<br />
+									<input type="submit" value="Incepe procesul" />
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div style="clear: both" />
+			</div>
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<div class="col">
+			Lista experimente trecute
+			<table>
+				<tr>
+					<th>Senzor Temperatura 1 (Celsius)</th>
+					<th>Senzor Temperatura 2 (Celsius)</th>
+					<th>Senzor Temperatura 3 (Celsius)</th>
+					<th>Timp</th>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+
 
 	<!-- Chart.js: www.chartjs.org -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
 	<script type="text/javascript">
-	const ctx = document.getElementById('temperatureChart').getContext('2d');
-	let chart = null;
-	setInterval(async function() {
-		let response = await fetch('/temps')
-		let temps = await response.json();
+		const ctx = document.getElementById('temperatureChart').getContext('2d');
+		let chart = null;
+		setInterval(async function () {
+			let response = await fetch('/temps')
+			let temps = await response.json();
 
-		if (chart != null) {
-			// Chart must be destroyed before creating new one
-			chart.destroy();
-		}
-		chart = new Chart(ctx, {
-			type: 'line',
-			data: {
-				labels: temps.map(x => x[4]),
-				datasets: [
-					{
-						label: 'Senzor 1',
-						data: temps.map(x => x[0]),
-						pointRadius: 0
-					},
-					{
-						label: 'Senzor 2',
-						data: temps.map(x => x[1]),
-						pointRadius: 0
-					}
-				],
-			},
-			options: {
-				scales: {
-					y: {
-						max: 30,
-						min: -20
-					}
-				},
-				animation: false
+			if (chart != null) {
+				// Chart must be destroyed before creating new one
+				chart.destroy();
 			}
-		});
-	}, 5000);
+			chart = new Chart(ctx, {
+				type: 'line',
+				data: {
+					labels: temps.map(x => x[4]),
+					datasets: [
+						{
+							label: 'Senzor 1',
+							data: temps.map(x => x[0]),
+							pointRadius: 0
+						},
+						{
+							label: 'Senzor 2',
+							data: temps.map(x => x[1]),
+							pointRadius: 0
+						}
+					],
+				},
+				options: {
+					scales: {
+						y: {
+							max: 30,
+							min: -20
+						}
+					},
+					animation: false
+				}
+			});
+		}, 5000);
 	</script>
-</body>
-</html>
 
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>
