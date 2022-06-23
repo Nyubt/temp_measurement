@@ -12,9 +12,10 @@
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 
-<body class="nav-fixed bg-light">
+<body class="nav-fixed bg-light" id="page-top">
 	<div class="container">
 		<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 			<div class="container-fluid">
@@ -24,7 +25,7 @@
 			</div>
 		</nav>
 		<br />
-		<div class="container-xxl position-relative bg-white d-flex p-0">
+		<div class="container-xxl position-relative d-flex p-0">
 			<div class="container">
 				<div class="row">
 					<div class="col col-xl-8 col-lg-7">
@@ -77,9 +78,9 @@
 						<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 							<h6 class="m-0 font-weight-bold text-primary">Past Experiments</h6>
 						</div>	
-						<div class="bg-light card-body">	
+						<div class="bg-white card-body">	
 							<div class="container-fluid px-4">		
-								<div class="text-center rounded p-4">
+								<div class="text-center rounded">
 									<div class="table-responsive">
 										<table class="table text-start align-middle table-bordered table-hover mb-0">
 											<tr class="text-dark">
@@ -98,6 +99,9 @@
 			</div>
 		</div>
 	</div>	
+	<a class="scroll-to-top rounded" href="#page-top" style="display: inline;">
+        <i class="bi bi-arrow-up"></i>
+    </a>
 
 	<!-- Chart.js: www.chartjs.org -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
