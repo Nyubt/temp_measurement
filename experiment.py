@@ -1,7 +1,7 @@
 from threading import Thread
 import time
 
-from config import DATABASE, RASPBERRY_PI
+from config import DATABASE, RASPBERRY_PI, ExperimentConfig
 from device import DEVICE
 from repository import Repository
 
@@ -20,42 +20,48 @@ from repository import Repository
 
 
 class Experiment(Thread):
-    def __init__(self):
+    def __init__(self, experiment: ExperimentConfig):
         self.device = DEVICE
+        self.experiment = experiment
         Thread.__init__(self, daemon=True)
-
-    def temp_min(self, x):
-        if x < 180:
-            return 15 - (22 / 180.0) * x
-        elif x < 300:
-            return 10
-
-    def temp_max(self, x):
-        return 17
 
     def run(self):
         print("Am inceput experimentul")
         repo = Repository()
 
-        # Racire
-        for x in range(16 * 60):
-            temp = repo.read_last_temp_db()
+        for cycle in self.experiment.cycles:
+            for minute in range(self.experiment.duration * 60):
+                hour = minute / 60.0
+                temp = repo.read_last_temp_db()
+                upper_a, upper_b = 0, 0
+                lower_a, lower_b = 0, 0
 
-            if temp > self.temp_min(x):
-                self.device.start_fridge()
-            elif temp < self.temp_max(x):
-                self.device.stop_fridge()
-            time.sleep(60)
-        self.device.stop_fridge()
+                for upper_segment in self.experiment.upper:
+                    if upper_segment.start >= hour and upper_segment.end <= hour:
+                        upper_a, upper_b = upper_segment.A, upper_segment.B
+                        break
 
-        # Incalzire
-        for x in range(16 * 60, 24 * 60):
-            temp = repo.read_last_temp_db()
+                for lower_segment in self.experiment.lower:
+                    if lower_segment.start >= hour and lower_segment.end <= hour:
+                        lower_a, lower_b = lower_segment.A, lower_segment.B
+                        break
 
-            if temp > self.temp_min(x):
-                self.device.stop_heater()
-            elif temp < self.temp_max(x):
-                self.device.start_heater()
-            time.sleep(60)
+                temp_max = upper_a * hour + upper_b
+                temp_min = lower_a * hour + lower_b
+
+                if upper_a > 0 or (upper_a == 0 and upper_b > 0):
+                    # Incalzire
+                    if temp > temp_min:
+                        self.device.stop_heater()
+                    elif temp < temp_max:
+                        self.device.start_heater()
+                else:
+                    # Racire
+                    if temp > temp_min:
+                        self.device.start_fridge()
+                    elif temp < temp_max:
+                        self.device.stop_fridge()
+
+                time.sleep(60)
 
         self.device.stop_heater()

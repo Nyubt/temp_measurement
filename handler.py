@@ -6,7 +6,7 @@ import threading
 from datetime import datetime
 
 from experiment import Experiment
-from config import DATABASE
+from config import DATABASE, EXPERIMENT
 from repository import Repository
 
 
@@ -59,7 +59,7 @@ class Handler(BaseHTTPRequestHandler):
             map[key] = val
         print(map)
 
-        x = Experiment()
+        x = Experiment(EXPERIMENT["1"])
         x.start()
 
         self.send_response(200)
