@@ -48,7 +48,7 @@ class Repository:
     def read_temp_db(self):
         conn = self.connect_db()
         now = int(time.time())
-        sql_read_temp_table = "SELECT temp1,temp2,temp3,read_time FROM temperature WHERE read_time > ? - 3600"
+        sql_read_temp_table = "SELECT temp1,temp2,temp3,read_time FROM temperature WHERE read_time > (select time_start from test where time_end is null order by time_start desc limit 1)"
         data = conn.execute(sql_read_temp_table, [now]).fetchall()
         conn.close()
         return data
