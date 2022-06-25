@@ -10,6 +10,9 @@ from config import DATABASE, EXPERIMENT
 from repository import Repository
 
 
+experiment = None
+
+
 class Handler(BaseHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         self.dbconn = Repository()
@@ -18,6 +21,8 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/temps":
             self.send_temperatures()
+        elif self.path == "/experiments":
+            self.send_experiments()
         else:
             self.send_html_page()
 
@@ -42,7 +47,20 @@ class Handler(BaseHTTPRequestHandler):
         ]
         self.wfile.write(bytes(json.dumps(temps), "utf-8"))
 
+    def send_experiments(self):
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.end_headers()
+        experiments = [{
+           'id': 17,
+           'time_start': 12312321,
+           'time_end': 1231312312
+        }] # Read from database
+        self.wfile.write(bytes(json.dumps(experiments), "utf-8"))
+
     def do_POST(self):
+        global experiment
+
         # Porneste ciclul de temperatura
         # intr-un thread nou
         # Porneste frigiderul
@@ -59,8 +77,20 @@ class Handler(BaseHTTPRequestHandler):
             map[key] = val
         print(map)
 
-        x = Experiment(EXPERIMENT["1"])
-        x.start()
+        if 'start_process' in map:
+            if experiment is None:
+                # Add experiment to database
+                # self.dbconn.add_new_experiment()
+                experiment = Experiment(EXPERIMENT["1"])
+                experiment.start()
+            else:
+                print('An experiment is already running')
+        elif 'stop_process' in map:
+            if experiment is not None:
+                # Stop experiment in database
+                # self.dbconn.stop_experiment()
+                experiment.stop()
+                experiment = None
 
         self.send_response(200)
         self.end_headers()

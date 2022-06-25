@@ -2,6 +2,16 @@ from random import random
 from typing import Tuple
 from config import DEVICE1, DEVICE2, RASPBERRY_PI
 
+PIN_HEATER = 17
+PIN_FRIDGE = 26
+
+
+if RASPBERRY_PI:
+    import RPi.GPIO as GPIO
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(PIN_HEATER, GPIO.IN)
+    GPIO.setup(PIN_FRIDGE, GPIO.IN)
+
 
 class TestDevice:
     temp1 = 20
@@ -46,33 +56,37 @@ class RaspberryDevice:
         pass
 
     def start_heater(self):
-        # TODO: Implement me
-        pass
+        print('Starting heater')
+        GPIO.setup(PIN_HEATER, GPIO.OUT)
+        GPIO.output(PIN_HEATER, GPIO.HIGH)
 
     def stop_heater(self):
-        # TODO: Implement me
-        pass
+        print('Stopping heater')
+        GPIO.setup(PIN_HEATER, GPIO.IN)
 
     def start_fridge(self):
-        # TODO: Implement me
-        pass
+        print('Starting fridge')
+        GPIO.setup(PIN_FRIDGE, GPIO.OUT)
+        GPIO.output(PIN_FRIDGE, GPIO.HIGH)
 
     def stop_fridge(self):
-        # TODO: Implement me
-        pass
+        print('Stopping fridge')
+        GPIO.setup(PIN_FRIDGE, GPIO.IN)
 
     def tempread(self) -> Tuple[float, float]:
         with open(f"/sys/devices/w1_bus_master1/{DEVICE1}/w1_slave", "r") as f:
             words = f.read().split()
             last_word = words[-1]
-            temp1 = int(last_word.split("=")[1]) / 1000
+            temp1 = int(last_word.split("=")[1]) / 1000.0
 
         with open(f"/sys/devices/w1_bus_master1/{DEVICE2}/w1_slave", "r") as f:
             words = f.read().split()
             last_word = words[-1]
-            temp2 = int(last_word.split("=")[1]) / 1000
+            temp2 = int(last_word.split("=")[1]) / 1000.0
 
         return (temp1, temp2)
 
-
-DEVICE = TestDevice()
+if not RASPBERRY_PI:
+    DEVICE = TestDevice()
+else:
+    DEVICE = RaspberryDevice()

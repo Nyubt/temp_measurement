@@ -102,12 +102,16 @@
 								<div class="text-center rounded">
 									<div class="table-responsive">
 										<table class="table text-start align-middle table-bordered table-hover mb-0">
-											<tr class="text-dark">
-												<th>Sensor Temp 1 (Celsius)</th>
-												<th>Sensor Temp 2 (Celsius)</th>
-												<th>Sensor Temp 3 (Celsius)</th>
-												<th>Time</th>
-											</tr>
+										    <thead>
+    											<tr class="text-dark">
+	    											<th>ID</th>
+		    										<th>Start time</th>
+			    									<th>Stop time</th>
+				    								<th>Aborted</th>
+					    						</tr>
+					    				    </thead>
+					    				    <tbody id="table_body">
+					    				    </tbody>
 										</table>
 									</div>
 								</div>
@@ -163,6 +167,23 @@
 				}
 			});
 		}, 5000);
+
+        setInterval(async function () {
+			let response = await fetch('/experiments')
+			let exps = await response.json();
+			console.log(exps);
+
+			let tbody = document.getElementById('table_body');
+			let html = '';
+			for (let i = 0; i < exps.length; i++) {
+			    html += '<tr><td>' + exps[i].id + '</td><td>' + exps[i].time_start + '</td><td>' + exps[i].time_end + '</td></tr>'
+			}
+			tbody.innerHTML = html;
+
+			// Daca ruleaza un experiment
+			// marcheaza butonul ca disabled
+	    }, 500);
+		
 	</script>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
