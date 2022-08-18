@@ -15,9 +15,9 @@ class Temperature(Thread):
         conn = dbconn.connect_db()
         while 1:
             try:
-                temp1, temp2 = DEVICE.tempread()
-                dbconn.write_temp_db(conn, temp1, temp2, 0)
-                print(temp1, temp2)
+                temp1, temp2, temp3 = DEVICE.tempread()
+                dbconn.write_temp_db(conn, temp1, temp2, temp3)
+                print(temp1, temp2, temp3)
             except Exception as e:
                 print(e)
                 pass

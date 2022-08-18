@@ -1,6 +1,6 @@
 from random import random
 from typing import Tuple
-from config import DEVICE1, DEVICE2, RASPBERRY_PI
+from config import DEVICE1, DEVICE2, DEVICE3, RASPBERRY_PI
 
 PIN_HEATER = 17
 PIN_FRIDGE = 26
@@ -8,6 +8,7 @@ PIN_FRIDGE = 26
 
 if RASPBERRY_PI:
     import RPi.GPIO as GPIO
+
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(PIN_HEATER, GPIO.IN)
     GPIO.setup(PIN_FRIDGE, GPIO.IN)
@@ -56,21 +57,21 @@ class RaspberryDevice:
         pass
 
     def start_heater(self):
-        print('Starting heater')
+        print("Starting heater")
         GPIO.setup(PIN_HEATER, GPIO.OUT)
         GPIO.output(PIN_HEATER, GPIO.HIGH)
 
     def stop_heater(self):
-        print('Stopping heater')
+        print("Stopping heater")
         GPIO.setup(PIN_HEATER, GPIO.IN)
 
     def start_fridge(self):
-        print('Starting fridge')
+        print("Starting fridge")
         GPIO.setup(PIN_FRIDGE, GPIO.OUT)
         GPIO.output(PIN_FRIDGE, GPIO.HIGH)
 
     def stop_fridge(self):
-        print('Stopping fridge')
+        print("Stopping fridge")
         GPIO.setup(PIN_FRIDGE, GPIO.IN)
 
     def tempread(self) -> Tuple[float, float]:
@@ -84,7 +85,13 @@ class RaspberryDevice:
             last_word = words[-1]
             temp2 = int(last_word.split("=")[1]) / 1000.0
 
-        return (temp1, temp2)
+        with open(f"/sys/devices/w1_bus_master1/{DEVICE3}/w1_slave", "r") as f:
+            words = f.read().split()
+            last_word = words[-1]
+            temp3 = int(last_word.split("=")[1]) / 1000.0
+
+        return (temp1, temp2, temp3)
+
 
 if not RASPBERRY_PI:
     DEVICE = TestDevice()
