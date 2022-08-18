@@ -18,8 +18,8 @@ class ExperimentConfig:
     lower: List[Segment]
 
 
-DEVICE1 = "28-3c01f0957154"
-DEVICE2 = "28-3c01f095d551"
+DEVICE1 = "28-3c3ce381c241"
+DEVICE2 = "28-3c53e381a5d8"
 RASPBERRY_PI = True
 DATABASE = "pythonsqlite.db"
 EXPERIMENT = {
