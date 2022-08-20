@@ -49,21 +49,21 @@
 								<h6 class="m-0 font-weight-bold text-primary">Experiment Progress</h6>
 							</div>
 							<div class="card-body">
-								<div style="height: 20rem; width: 100%; position: relative">
+								<div style="min-height: 20rem; width: 100%; position: relative">
 									<canvas id="temperatureChart" />
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="col-xl-4 col-lg-5">
+					<div class="col-xl-4 col-lg-5" style="height: 100%;">
 						<div class="card shadow mb-4">
 							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-								<h6 class="m-0 font-weight-bold text-primary">Experiment Mnagement</h6>
+								<h6 class="m-0 font-weight-bold text-primary">Experiment Management</h6>
 							</div>
 							<div class="card-body">
-								<div style="height: 20rem; width: 100%; position: relative; box-sizing: border-box;">
-									<div>
-										Experimentul este oprit!
+								<div style="min-height: 20rem; width: 100%; position: relative; box-sizing: border-box;">
+									<div id="text_experiment">
+										
 									</div>
 									<div style="padding-top: 1.5rem!important; padding-bottom: 0.5rem!important">
 										<form action="/" method="POST">
@@ -76,8 +76,8 @@
 												</select>
 											</div>
 											<br />
-											<input type="submit" class="button" name="start_process" value="Incepe procesul" />
-											<input type="submit" class="button" name="stop_process" value="Incheie procesul" />
+											<input type="submit" class="button" id="start_process" name="start_process" value="Incepe procesul" />
+											<input type="submit" class="button" id="stop_process" name="stop_process" value="Incheie procesul" />
 										</form>
 									</div>
 								</div>
@@ -181,13 +181,24 @@
 			let tbody = document.getElementById('table_body');
 			let html = '';
 			for (let i = 0; i < exps.length; i++) {
-			    html += '<tr><td>' + exps[i].id + '</td><td>' + exps[i].time_start + '</td><td>' + exps[i].time_end + '</td></tr>'
+			    html += '<tr><td>' + (i+1) + '</td><td>' + new Date(exps[i][0] * 1000).toLocaleString() + '</td><td>' 
+					+ (exps[i][1] == null ? "" : new Date(exps[i][1] * 1000).toLocaleString()) + '</td><td>' + 
+					exps[i][2] + '</td></tr>'
 			}
 			tbody.innerHTML = html;
 
-			// Daca ruleaza un experiment
-			// marcheaza butonul ca disabled
+			if(exps[exps.length - 1][1] == null){
+				document.getElementById('text_experiment').innerText = "Experimentul ruleaza";
+				document.getElementById('start_process').disabled = true;
+				document.getElementById('stop_process').disabled = false;
+			} else {
+				document.getElementById('text_experiment').innerText = "Experimentul e oprit";
+				document.getElementById('start_process').disabled = false;
+				document.getElementById('stop_process').disabled = true;
+			}
 	    }, 500);
+
+		
 		
 	</script>
 

@@ -17,6 +17,7 @@ if RASPBERRY_PI:
 class TestDevice:
     temp1 = 20
     temp2 = 21
+    temp3 = 22
     fridge_on = False
     heater_on = False
 
@@ -48,8 +49,9 @@ class TestDevice:
             delta = -0.1 * random()
         self.temp1 += delta
         self.temp2 += delta
+        self.temp3 += delta
 
-        return (self.temp1, self.temp2)
+        return (self.temp1, self.temp2, self.temp3)
 
 
 class RaspberryDevice:

@@ -52,30 +52,29 @@ class Experiment(Thread):
 
                 if upper_a > 0 or (upper_a == 0 and upper_b > 0):
                     # Incalzire
-                    print('Incalzire')
+                    print("Incalzire")
                     if temp > temp_min:
                         self.device.stop_heater()
                     elif temp < temp_max:
                         self.device.start_heater()
                 else:
                     # Racire
-                    print('Racire')
+                    print("Racire")
                     if temp > temp_min:
                         self.device.start_fridge()
                     elif temp < temp_max:
                         self.device.stop_fridge()
 
                     if self.stop_event.wait(timeout=60):
-                        print('Condition signaled')
+                        print("Condition signaled")
                         self.device.stop_heater()
                         self.device.stop_fridge()
                         return
 
         # Mark experiment as successful
-        # repo.mark_success()
+        repo.end_test_db(False)
         self.device.stop_heater()
 
     def stop(self):
-        print('Stopping experiment')
+        print("Stopping experiment")
         self.stop_event.set()
-
