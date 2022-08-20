@@ -183,7 +183,7 @@
 			for (let i = 0; i < exps.length; i++) {
 			    html += '<tr><td>' + (i+1) + '</td><td>' + new Date(exps[i][0] * 1000).toLocaleString() + '</td><td>' 
 					+ (exps[i][1] == null ? "" : new Date(exps[i][1] * 1000).toLocaleString()) + '</td><td>' + 
-					exps[i][2] + '</td></tr>'
+					(exps[i][2] == 1 ? "Yes" : "No") + '</td></tr>'
 			}
 			tbody.innerHTML = html;
 
