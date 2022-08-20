@@ -21,7 +21,7 @@ class ExperimentConfig:
 DEVICE1 = "28-3c3ce381c241"
 DEVICE2 = "28-3c53e381a5d8"
 DEVICE3 = "28-3cd1e38121fa"
-RASPBERRY_PI = False
+RASPBERRY_PI = True
 DATABASE = "pythonsqlite.db"
 EXPERIMENT = {
     "1": ExperimentConfig(
