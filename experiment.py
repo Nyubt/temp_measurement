@@ -29,6 +29,7 @@ class Experiment(Thread):
     def run(self):
         print("Am inceput experimentul")
         repo = Repository()
+        self.device.start_fan()
 
         for cycle in range(self.experiment.cycles):
             for minute in range(self.experiment.duration * 60):
@@ -69,11 +70,14 @@ class Experiment(Thread):
                         print("Condition signaled")
                         self.device.stop_heater()
                         self.device.stop_fridge()
+                        self.device.stop_fan()
                         return
 
         # Mark experiment as successful
         repo.end_test_db(False)
         self.device.stop_heater()
+        self.device.stop_fridge()
+        self.device.stop_fan()
 
     def stop(self):
         print("Stopping experiment")

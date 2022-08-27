@@ -3,7 +3,8 @@ from typing import Tuple
 from config import DEVICE1, DEVICE2, DEVICE3, RASPBERRY_PI
 
 PIN_HEATER = 17
-PIN_FRIDGE = 26
+PIN_FRIDGE = 27
+PIN_FAN = 22
 
 
 if RASPBERRY_PI:
@@ -12,6 +13,7 @@ if RASPBERRY_PI:
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(PIN_HEATER, GPIO.IN)
     GPIO.setup(PIN_FRIDGE, GPIO.IN)
+    GPIO.setup(PIN_FAN, GPIO.IN)
 
 
 class TestDevice:
@@ -75,6 +77,15 @@ class RaspberryDevice:
     def stop_fridge(self):
         print("Stopping fridge")
         GPIO.setup(PIN_FRIDGE, GPIO.IN)
+
+    def start_fan(self):
+        print("Starting fan")
+        GPIO.setup(PIN_FAN, GPIO.OUT)
+        GPIO.output(PIN_FAN, GPIO.HIGH)
+
+    def stop_fan(self):
+        print("Stopping fan")
+        GPIO.setup(PIN_FAN, GPIO.IN)
 
     def tempread(self) -> Tuple[float, float]:
         with open(f"/sys/devices/w1_bus_master1/{DEVICE1}/w1_slave", "r") as f:

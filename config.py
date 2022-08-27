@@ -21,12 +21,12 @@ class ExperimentConfig:
 DEVICE1 = "28-3c3ce381c241"
 DEVICE2 = "28-3c53e381a5d8"
 DEVICE3 = "28-3cd1e38121fa"
-RASPBERRY_PI = True
+RASPBERRY_PI = False
 DATABASE = "pythonsqlite.db"
 EXPERIMENT = {
     "1": ExperimentConfig(
         duration=24,
-        cycles=28,
+        cycles=56,
         upper=[
             Segment(start=0, end=5, A=-27.0 / 5, B=24),
             Segment(start=5, end=12, A=-12.0 / 7, B=39.0 / 7),
@@ -44,7 +44,7 @@ EXPERIMENT = {
     ),
     "2": ExperimentConfig(
         duration=24,
-        cycles=28,
+        cycles=56,
         upper=[
             Segment(start=0, end=2, A=-10, B=22),
             Segment(start=2, end=4, A=0, B=2),
