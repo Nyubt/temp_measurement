@@ -136,25 +136,36 @@
 			chart = new Chart(ctx, {
 				type: 'line',
 				data: {
-					labels: temps.map(x => x[4]),
+					labels: temps.map(x => x[3]),
 					datasets: [
 						{
-							label: 'Senzor 1',
+							label: 'Temperatura Minima',
 							data: temps.map(x => x[0]),
-							pointRadius: 0
+							pointRadius: 0,
+							backgroundColor: "#19aade",
+							borderColor: "#19aade"
 						},
 						{
-							label: 'Senzor 2',
+							label: 'Temperatura Curenta',
 							data: temps.map(x => x[1]),
-							pointRadius: 0
+							pointRadius: 0,
+							backgroundColor: "#c02323",
+							borderColor: "#c02323"
+						},
+						{
+							label: 'Temperatura Maxima',
+							data: temps.map(x => x[2]),
+							pointRadius: 0,
+							backgroundColor: "#176ba0",
+							borderColor: "#176ba0"
 						}
 					],
 				},
 				options: {
 					scales: {
 						y: {
-							max: 30,
-							min: -20
+							max: 25,
+							min: -25
 						},
 						x: {
                             ticks: {

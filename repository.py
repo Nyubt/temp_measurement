@@ -19,6 +19,8 @@ class Repository:
                                         temp1 real NOT NULL,
                                         temp2 real NOT NULL,
                                         temp3 real NOT NULL,
+                                        temp_min real NOT NULL,
+                                        temp_max real NOT NULL,
                                         read_time numeric NOT NULL
                                     ); """
 
@@ -36,11 +38,11 @@ class Repository:
         conn.execute(sql_create_test_data_table)
         conn.close()
 
-    def write_temp_db(self, conn, temp1, temp2, temp3):
-        sql_write_temp = (
-            "INSERT INTO temperature (temp1,temp2,temp3,read_time) VALUES (?,?,?,?) "
+    def write_temp_db(self, conn, temp1, temp2, temp3, temp_min, temp_max):
+        sql_write_temp = "INSERT INTO temperature (temp1,temp2,temp3,temp_min,temp_max,read_time) VALUES (?,?,?,?,?,?) "
+        conn.execute(
+            sql_write_temp, (temp1, temp2, temp3, temp_min, temp_max, int(time.time()))
         )
-        conn.execute(sql_write_temp, (temp1, temp2, temp3, int(time.time())))
         conn.commit()
 
     def start_test_db(self, cycles, experiment):
@@ -56,21 +58,22 @@ class Repository:
         conn = self.connect_db()
         sql_get_last_test_table = """SELECT exp_id FROM test where time_end is null order by time_start desc limit 1"""
         data = conn.execute(sql_get_last_test_table, []).fetchone()
-        sql_end_test = "UPDATE test set terminated=?, time_end=? where exp_id=? "
-        conn.execute(sql_end_test, (terminated, int(time.time()), data[0]))
-        conn.commit()
+        if data is not None and len(data) > 0:
+            sql_end_test = "UPDATE test set terminated=?, time_end=? where exp_id=? "
+            conn.execute(sql_end_test, (terminated, int(time.time()), data[0]))
+            conn.commit()
         conn.close()
 
     def read_temp_db(self):
         conn = self.connect_db()
-        now = int(time.time())
         sql_time_start = """select time_start from test where time_end is null order by time_start desc limit 1"""
-        data = conn.execute(sql_read_temp_table, []).fetchall()
+        data = conn.execute(sql_time_start, []).fetchall()
         if len(data) == 0:
-            sql_read_temp_table = """SELECT temp1,temp2,temp3,read_time FROM temperature 
-            WHERE read_time"""
+            sql_read_temp_table = """SELECT temp1,temp2,temp3,temp_min,temp_max,read_time FROM temperature 
+            WHERE read_time > (select time_start from test order by time_start desc limit 1)
+            AND read_time < (select time_end from test order by time_start desc limit 1)"""
         else:
-            sql_read_temp_table = """SELECT temp1,temp2,temp3,read_time FROM temperature 
+            sql_read_temp_table = """SELECT temp1,temp2,temp3,temp_min,temp_max,read_time FROM temperature 
             WHERE read_time > (select time_start from test where time_end is null order by time_start desc limit 1)"""
         data = conn.execute(sql_read_temp_table, []).fetchall()
         conn.close()
@@ -85,7 +88,6 @@ class Repository:
 
     def read_last_temp_db(self):
         conn = self.connect_db()
-        now = int(time.time())
         sql_read_temp_table = "SELECT (temp1 + temp2 + temp3)/3 FROM temperature ORDER BY read_time DESC LIMIT 1"
         data = conn.execute(sql_read_temp_table, []).fetchone()
         conn.close()

@@ -2,9 +2,9 @@ from random import random
 from typing import Tuple
 from config import DEVICE1, DEVICE2, DEVICE3, RASPBERRY_PI
 
-PIN_HEATER = 17
+PIN_HEATER = 22
 PIN_FRIDGE = 27
-PIN_FAN = 22
+PIN_FAN = 17
 
 
 if RASPBERRY_PI:

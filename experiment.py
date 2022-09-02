@@ -24,18 +24,20 @@ class Experiment(Thread):
         self.device = DEVICE
         self.experiment = experiment
         self.stop_event = Event()
+        self.temp_max = 0
+        self.temp_min = 0
         Thread.__init__(self, daemon=True)
 
     def run(self):
         print("Am inceput experimentul")
         repo = Repository()
         self.device.start_fan()
-        print(self.experiment)
+        # print(self.experiment)
 
         for cycle in range(self.experiment.cycles):
             for minute in range(self.experiment.duration * 60):
                 hour = minute / 60.0
-                print(hour)
+                # print(hour)
                 temp = repo.read_last_temp_db()
                 upper_a, upper_b = 0, 0
                 lower_a, lower_b = 0, 0
@@ -50,11 +52,13 @@ class Experiment(Thread):
                         lower_a, lower_b = lower_segment.A, lower_segment.B
                         break
 
-                print(upper_a, upper_b, lower_a, lower_b)
+                # print(upper_a, upper_b, lower_a, lower_b)
                 temp_max = upper_a * hour + upper_b
                 temp_min = lower_a * hour + lower_b
+                self.temp_max = temp_max
+                self.temp_min = temp_min
 
-                print(temp, temp_min, temp_max)
+                # print(temp, temp_min, temp_max)
                 if upper_a > 0 or (upper_a == 0 and upper_b > 0):
                     # Incalzire
                     print("Incalzire")
@@ -72,12 +76,12 @@ class Experiment(Thread):
                         # else:
                         self.device.stop_fridge()
 
-                    if self.stop_event.wait(timeout=60):
-                        print("Condition signaled")
-                        self.device.stop_heater()
-                        self.device.stop_fridge()
-                        self.device.stop_fan()
-                        return
+                if self.stop_event.wait(timeout=60):
+                    print("Termination condition signaled")
+                    self.device.stop_heater()
+                    self.device.stop_fridge()
+                    self.device.stop_fan()
+                    return
 
         # Mark experiment as successful
         repo.end_test_db(False)

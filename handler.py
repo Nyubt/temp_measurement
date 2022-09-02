@@ -45,7 +45,8 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         # Add human-readable datetime representation
         temps = [
-            list(t) + [datetime.fromtimestamp(t[3]).strftime("%c")]
+            [t[3], (t[0] + t[1] + t[2]) / 3, t[4]]
+            + [datetime.fromtimestamp(t[5]).strftime("%c")]
             for t in self.dbconn.read_temp_db()
         ]
         self.wfile.write(bytes(json.dumps(temps), "utf-8"))
