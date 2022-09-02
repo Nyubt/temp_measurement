@@ -64,8 +64,14 @@ class Repository:
     def read_temp_db(self):
         conn = self.connect_db()
         now = int(time.time())
-        sql_read_temp_table = """SELECT temp1,temp2,temp3,read_time FROM temperature 
-        WHERE read_time > (select time_start from test where time_end is null order by time_start desc limit 1)"""
+        sql_time_start = """select time_start from test where time_end is null order by time_start desc limit 1"""
+        data = conn.execute(sql_read_temp_table, []).fetchall()
+        if len(data) == 0:
+            sql_read_temp_table = """SELECT temp1,temp2,temp3,read_time FROM temperature 
+            WHERE read_time"""
+        else:
+            sql_read_temp_table = """SELECT temp1,temp2,temp3,read_time FROM temperature 
+            WHERE read_time > (select time_start from test where time_end is null order by time_start desc limit 1)"""
         data = conn.execute(sql_read_temp_table, []).fetchall()
         conn.close()
         return data
@@ -80,7 +86,7 @@ class Repository:
     def read_last_temp_db(self):
         conn = self.connect_db()
         now = int(time.time())
-        sql_read_temp_table = "SELECT temp1,temp2,temp3,read_time FROM temperature ORDER BY read_time DESC LIMIT 1"
+        sql_read_temp_table = "SELECT (temp1 + temp2 + temp3)/3 FROM temperature ORDER BY read_time DESC LIMIT 1"
         data = conn.execute(sql_read_temp_table, []).fetchone()
         conn.close()
         return data[0]

@@ -30,33 +30,38 @@ class Experiment(Thread):
         print("Am inceput experimentul")
         repo = Repository()
         self.device.start_fan()
+        print(self.experiment)
 
         for cycle in range(self.experiment.cycles):
             for minute in range(self.experiment.duration * 60):
                 hour = minute / 60.0
+                print(hour)
                 temp = repo.read_last_temp_db()
                 upper_a, upper_b = 0, 0
                 lower_a, lower_b = 0, 0
 
                 for upper_segment in self.experiment.upper:
-                    if upper_segment.start >= hour and upper_segment.end <= hour:
+                    if upper_segment.start <= hour and hour <= upper_segment.end:
                         upper_a, upper_b = upper_segment.A, upper_segment.B
                         break
 
                 for lower_segment in self.experiment.lower:
-                    if lower_segment.start >= hour and lower_segment.end <= hour:
+                    if lower_segment.start <= hour and hour <= lower_segment.end:
                         lower_a, lower_b = lower_segment.A, lower_segment.B
                         break
 
+                print(upper_a, upper_b, lower_a, lower_b)
                 temp_max = upper_a * hour + upper_b
                 temp_min = lower_a * hour + lower_b
 
+                print(temp, temp_min, temp_max)
                 if upper_a > 0 or (upper_a == 0 and upper_b > 0):
                     # Incalzire
                     print("Incalzire")
                     if temp > temp_min:
                         self.device.stop_heater()
                     elif temp < temp_max:
+                        # else:
                         self.device.start_heater()
                 else:
                     # Racire
@@ -64,6 +69,7 @@ class Experiment(Thread):
                     if temp > temp_min:
                         self.device.start_fridge()
                     elif temp < temp_max:
+                        # else:
                         self.device.stop_fridge()
 
                     if self.stop_event.wait(timeout=60):

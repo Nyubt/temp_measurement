@@ -42,9 +42,15 @@ class TestDevice:
         print("Am oprit racirea")
         self.fridge_on = False
 
-    def tempread(self) -> Tuple[float, float]:
+    def start_fan(self):
+        print("Am pornit ventilatorul")
+
+    def stop_fan(self):
+        print("Am oprit ventilatorul")
+
+    def tempread(self) -> Tuple[float, float, float]:
         # temp aleatoare
-        delta = 0.1 * (random() - 0.5)
+        delta = 0.1 * (random() - 0.3)
         if self.heater_on:
             delta = 0.1 * random()
         elif self.fridge_on:
@@ -87,7 +93,7 @@ class RaspberryDevice:
         print("Stopping fan")
         GPIO.setup(PIN_FAN, GPIO.IN)
 
-    def tempread(self) -> Tuple[float, float]:
+    def tempread(self) -> Tuple[float, float, float]:
         with open(f"/sys/devices/w1_bus_master1/{DEVICE1}/w1_slave", "r") as f:
             words = f.read().split()
             last_word = words[-1]
