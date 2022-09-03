@@ -36,4 +36,4 @@ class Temperature(Thread):
             except Exception as e:
                 print(e)
                 pass
-            time.sleep(60)
+            time.sleep(30)
