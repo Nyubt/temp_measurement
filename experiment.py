@@ -62,7 +62,9 @@ class Experiment(Thread):
                 if upper_a > 0 or (upper_a == 0 and upper_b > 0):
                     # Incalzire
                     print("Incalzire")
-                    if temp > temp_min:
+                    if temp > temp_max:
+                        self.device.start_fridge()
+                    elif temp > temp_min:
                         self.device.stop_heater()
                     elif temp < temp_max:
                         # else:
@@ -70,7 +72,9 @@ class Experiment(Thread):
                 else:
                     # Racire
                     print("Racire")
-                    if temp > temp_min:
+                    if temp < temp_min:
+                        self.device.start_heater()
+                    elif temp > temp_min:
                         self.device.start_fridge()
                     elif temp < temp_max:
                         # else:
