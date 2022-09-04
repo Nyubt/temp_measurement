@@ -23,7 +23,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 
-	<title>Experiment Dashboard</title>
+	<title>Tabloul de Bord al Experimentului</title>
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
@@ -35,7 +35,7 @@
 		<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 			<div class="container-fluid">
 				<a class="navbar-brand mx-auto text-primary">
-					Experiment Preview
+					Vizualizare Experiment
 				</a>
 			</div>
 		</nav>
@@ -46,7 +46,7 @@
 					<div class="col col-xl-8 col-lg-7">
 						<div class="card shadow mb-4">
 							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-								<h6 class="m-0 font-weight-bold text-primary">Experiment Progress</h6>
+								<h6 class="m-0 font-weight-bold text-primary">Progres Experiment</h6>
 							</div>
 							<div class="card-body">
 								<div style="min-height: 20rem; width: 100%; position: relative">
@@ -58,7 +58,7 @@
 					<div class="col-xl-4 col-lg-5" style="height: 100%;">
 						<div class="card shadow mb-4">
 							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-								<h6 class="m-0 font-weight-bold text-primary">Experiment Management</h6>
+								<h6 class="m-0 font-weight-bold text-primary">Management Experiment</h6>
 							</div>
 							<div class="card-body">
 								<div style="min-height: 20rem; width: 100%; position: relative; box-sizing: border-box;">
@@ -68,7 +68,7 @@
 									<div style="padding-top: 1.5rem!important; padding-bottom: 0.5rem!important">
 										<form action="/" method="POST">
 											<div class="form-group">
-												<label for="sel1">Select experiment:</label>
+												<label for="sel1">Alege Experimentul:</label>
 												<select name="sel1" class="form-control" id="sel1">
 													<option value="1">Test placa</option>
 													<option value="2">Test cub</option>
@@ -92,7 +92,7 @@
 				<div class="col">
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-							<h6 class="m-0 font-weight-bold text-primary">Past Experiments</h6>
+							<h6 class="m-0 font-weight-bold text-primary">Lista Experimente</h6>
 						</div>	
 						<div class="bg-white card-body">	
 							<div class="container-fluid px-4">		
@@ -102,9 +102,9 @@
 										    <thead>
     											<tr class="text-dark">
 	    											<th>ID</th>
-		    										<th>Start time</th>
-			    									<th>End time</th>
-				    								<th>Aborted</th>
+		    										<th>Data Start</th>
+			    									<th>Data Sfarsit</th>
+				    								<th>Anulat</th>
 					    						</tr>
 					    				    </thead>
 					    				    <tbody id="table_body">
@@ -139,25 +139,28 @@
 					labels: temps.map(x => x[3]),
 					datasets: [
 						{
-							label: 'Temperatura Minima',
-							data: temps.map(x => x[0]),
-							pointRadius: 0,
-							backgroundColor: "#19aade",
-							borderColor: "#19aade"
-						},
-						{
 							label: 'Temperatura Curenta',
 							data: temps.map(x => x[1]),
 							pointRadius: 0,
+							borderWidth: 2,
 							backgroundColor: "#c02323",
 							borderColor: "#c02323"
+						},
+						{
+							label: 'Temperatura Minima',
+							data: temps.map(x => x[0]),
+							pointRadius: 0,
+							borderWidth: 4,
+							backgroundColor: "#1ac9e6",
+							borderColor: "#1ac9e6"
 						},
 						{
 							label: 'Temperatura Maxima',
 							data: temps.map(x => x[2]),
 							pointRadius: 0,
-							backgroundColor: "#176ba0",
-							borderColor: "#176ba0"
+							borderWidth: 4,
+							backgroundColor: "#19aade",
+							borderColor: "#19aade"
 						}
 					],
 				},

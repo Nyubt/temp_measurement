@@ -2,6 +2,7 @@ from threading import Thread
 import time
 import experiment
 import handler
+import traceback
 
 from repository import Repository
 from config import DATABASE, RASPBERRY_PI, DEVICE1, DEVICE2
@@ -35,5 +36,6 @@ class Temperature(Thread):
                 print(temp1, temp2, temp3)
             except Exception as e:
                 print(e)
+                # traceback.print_exc()
                 pass
-            time.sleep(60)
+            time.sleep(10)

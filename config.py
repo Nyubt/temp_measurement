@@ -33,6 +33,7 @@ EXPERIMENT = {
             Segment(start=12.0, end=16.0, A=-3.0 / 4, B=-6),
             Segment(start=16.0, end=18.0, A=17.0 / 2, B=-154),
             Segment(start=18.0, end=22.0, A=25.0 / 4, B=-227.0 / 2),
+            Segment(start=22.0, end=24.0, A=0.0, B=24),
         ],
         lower=[
             Segment(start=0.0, end=3.0, A=-7, B=16),
