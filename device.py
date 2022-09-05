@@ -27,6 +27,7 @@ class TestDevice:
         pass
 
     def start_heater(self):
+        self.stop_fridge()
         print("Am pornit incalzirea")
         self.heater_on = True
 
@@ -35,6 +36,7 @@ class TestDevice:
         self.heater_on = False
 
     def start_fridge(self):
+        self.stop_heater()
         print("Am pornit racirea")
         self.fridge_on = True
 
