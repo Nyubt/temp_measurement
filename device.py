@@ -77,7 +77,7 @@ class RaspberryDevice:
         GPIO.setup(PIN_HEATER, GPIO.IN)
 
     def start_fridge(self):
-        self.start_heater()
+        self.stop_heater()
         print("Starting fridge")
         GPIO.setup(PIN_FRIDGE, GPIO.OUT)
         GPIO.output(PIN_FRIDGE, GPIO.HIGH)

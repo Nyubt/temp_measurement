@@ -38,4 +38,4 @@ class Temperature(Thread):
                 print(e)
                 # traceback.print_exc()
                 pass
-            time.sleep(10)
+            time.sleep(60)
